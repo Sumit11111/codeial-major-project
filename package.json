@@ -1,0 +1,16 @@
+{
+  "name": "express-and-mongo",
+  "version": "1.0.0",
+  "description": "codeial the major project",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sumit",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.20"
+  }
+}
