@@ -1,6 +1,17 @@
 const express=require('express');
+const expressEjsLayouts = require('express-ejs-layouts');
+const db=require('./config/mongoose');
 const app=express();
 const port=8000;
+
+//ejs layout wrapper setup
+app.use(expressEjsLayouts);
+app.set('layout extractStyles',true);
+app.set('layout extractScripts',true);
+
+//setup for static files
+app.use(express.static('./assets'));
+
 
 //view setup
 app.set('view engine','ejs');
