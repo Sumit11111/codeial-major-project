@@ -23,10 +23,12 @@ passport.use(new Local_Strategy({usernameField:'email'},
     })
 }))
 
+//required from browser to server
 passport.serializeUser(function(user,done){
     done(null,user.id);
 })
 
+//required from server to browser
 passport.deserializeUser(function(id,done){
     User.findById(id,function(err,user){
         if(err){
@@ -36,5 +38,23 @@ passport.deserializeUser(function(id,done){
         return done(null,user);
     })
 })
+
+//check user authentication
+passport.checkUserAuthentication=(req,res,next)=>{
+    if(req.isAuthenticated())
+    return next();
+    else
+    return res.redirect('/users/sign-in');
+}
+
+//req.user contains the current signed in user from session cookie and we r sending it to locals for view
+passport.setAuthenticatedUser=(req,res,next)=>{
+    if(req.isAuthenticated())
+    res.locals.user=req.user;
+
+    next();
+    
+}
+
 
 module.exports=passport;

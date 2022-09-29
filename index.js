@@ -4,6 +4,12 @@ const expressEjsLayouts = require('express-ejs-layouts');
 const app=express();
 const port=8000;
 const db=require('./config/mongoose');
+//passport and express-session setup
+const expressSession=require('express-session');
+const passport=require('passport');
+const passportLocal=require('./config/passport_local_strategy');
+const MongoStore=require('connect-mongo');
+
 
 //ejs layout wrapper setup
 app.use(expressEjsLayouts);
@@ -21,6 +27,29 @@ app.use(express.static('./assets'));
 //view setup
 app.set('view engine','ejs');
 app.set('views','./Views');
+
+//express-session config middleware and mongoStore to store cookies
+app.use(expressSession({
+    name:'codeial',
+    secret:'howudoing',
+    resave:false,
+    saveUninitialized:false,
+    cookie:{maxAge:(1000*60*100)},
+    store:MongoStore.create({
+        mongoUrl:'mongodb://localhost/codeial_db_development',
+        autoRemove:'disabled'
+    },
+    function(err){
+        console.log(err || 'connect-mongoStore is OK');
+    }
+
+    )
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(passport.setAuthenticatedUser);
+
 
 //using express router
 app.use('/',require('./routes/index'));
