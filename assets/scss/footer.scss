@@ -1,0 +1,19 @@
+footer{
+    background-color: grey;
+    height: 10%;
+    div{
+        margin-left: 20px;
+        display: flex;
+        justify-content: start;
+        div{
+            margin-left: 20px;
+            display: flex;
+            flex-direction: column;
+            div{
+                a{
+                    color: white;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+footer {
+  background-color: grey;
+  height: 10%;
+}
+
+footer div {
+  margin-left: 20px;
+  display: flex;
+  justify-content: start;
+}
+
+footer div div {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+footer div div div a {
+  color: white;
+}

@@ -1,0 +1,28 @@
+header {
+  background-color: orange;
+}
+
+header ul {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  flex-flow: row-reverse;
+}
+
+header ul li {
+  margin-right: 20px;
+  color: white;
+  font-weight: bold;
+  font-size: larger;
+}
+
+header ul li a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+header ul div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
