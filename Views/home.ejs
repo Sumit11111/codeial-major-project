@@ -4,5 +4,29 @@
     </head>
     <body>
         <h1>Home Page</h1>
+        <section id="feed-posts">
+            <h4>Posts</h4>
+            <%if(locals.user){%>
+            <form action="/userPost/create" id="new-post-form" method="post">
+                <textarea name="content" placeholder="Enter some feeds..." cols="30" rows="10"></textarea>
+                <input type="submit" value="Post">
+            </form>
+            <%}%>
+        </section>
+        <section>
+            <ul>
+                <%for(i of userPosts){%>
+                    <li> 
+                        <p>
+                            <%=i.content%>
+                            <br>
+                            <small>
+                                <%=i.user.name%>
+                            </small>
+                        </p>
+                    </li>
+                    <%}%>
+            </ul>
+        </section>
     </body>
 </html>
