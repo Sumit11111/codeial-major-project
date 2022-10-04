@@ -1,25 +1,44 @@
 const { modules } = require('../config/mongoose');
 const User=require('../models/user');
 
-module.exports.profile=function(req,res){
-    if(req.cookies.user_id)
-    {
-        User.findById(req.cookies.user_id,(err,user)=>{
-            if(user){
-                console.log(user);
-                return res.render('users',{
-                    title:"user | Profile",
-                    user:user
-                })
-            }
-            else{
-                return res.redirect('/users/sign-in');
-            }
+module.exports.update=function(req,res){
+    if(req.user.id==req.params.id){
+        User.findByIdAndUpdate(req.params.id,req.body,(err,user)=>{
+            return res.redirect('/');
         })
     }else{
-    return res.redirect('/users/sign-in');}
-
+        return res.status(401).send('Unauthorized');
+    }
 }
+
+
+module.exports.profile=function(req,res){
+    User.findById(req.params.id,(err,user)=>{
+        return res.render('user_profile',{
+            title:'User Profile',
+            profile_user:user
+        })
+    })
+}
+//profile access manually
+// module.exports.profile=function(req,res){
+//     if(req.cookies.user_id)
+//     {
+//         User.findById(req.cookies.user_id,(err,user)=>{
+//             if(user){
+//                 console.log(user);
+//                 return res.render('users',{
+//                     title:"user | Profile",
+//                     user:user
+//                 })
+//             }
+//             else{
+//                 return res.redirect('/users/sign-in');
+//             }
+//         })
+//     }else{
+//     return res.redirect('/users/sign-in');}
+// }
 
 module.exports.signIn=function(req,res){
     if(req.isAuthenticated()){
@@ -42,37 +61,24 @@ module.exports.signUp=function(req,res){
     })
 }
 
-module.exports.create=function(req,res){
-    //console.log(req.body);
+module.exports.create=async function(req,res){
+    //password and confirm password should match
     if(req.body.password!=req.body.confirm_password)
     {
         console.log("password not match with confirm password");
         return res.redirect('back');
     }
-
-    User.findOne({email:req.body.email},function(err,user){
-        //console.log("new user created....");
-        if(err){
-            console.log("User already exist...");
-            return;
-        }
-        if(!user)
-        {
-            User.create(req.body,function(err,user){
-                if(err)
-                {
-                    console.log("Error in creating user while signing up...");
-                    return;
-                }
-                return res.redirect('/users/sign-in');
-            })
-        }
-        else{
-            res.redirect('back');
-        }
-    })
-
-    
+    try{
+    let user=await User.findOne({email:req.body.email});
+    if(!user)
+    {
+        await User.create(req.body);
+        return res.redirect('/users/sign-in');
+    }
+    else{res.redirect('back');}
+    }catch(err){
+        console.log('Error',err)
+    }
 }
 
 //Manual authentication without encryption
@@ -120,5 +126,4 @@ module.exports.destroySession=function(req,res,next){
         }
         res.redirect('/');
     });
-    
 }

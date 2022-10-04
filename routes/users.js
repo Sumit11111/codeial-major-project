@@ -7,7 +7,8 @@ const users_controller=require('../controllers/user_controller');
 router.get('/profile',users_controller.profile);
 
 //route to profile with passport authentication
-router.get('/proofile',passport.checkUserAuthentication,users_controller.profile)
+router.get('/profile/:id',passport.checkUserAuthentication,users_controller.profile)
+router.post('/update/:id',passport.checkUserAuthentication,users_controller.update)
 
 
 router.get('/sign-up',users_controller.signUp);
