@@ -23,24 +23,27 @@ module.exports.create=async function(req,res){
         }
     }catch(err){
         console.log('Error:',err);
+        return;
     }
 
 }
 
-module.exports.destroy=function(req,res){
-    Comment.findById(req.params.id,(err,comment)=>{
+module.exports.destroy=async function(req,res){
+    try{
+    let comment=await Comment.findById(req.params.id)
         if(comment.user==req.user.id)
         {
             let postId=comment.post;
             comment.remove();
 
-            Post.findByIdAndUpdate(postId,{$pull:{comments:req.params.id}},(err,post)=>{
-                return res.redirect('/');
-            })
-
+            await Post.findByIdAndUpdate(postId,{$pull:{comments:req.params.id}})
+            return res.redirect('/');
         }
         else{
             return res.redirect('/');
         }
-    })
+    }catch(err){
+        console.log('Error',err);
+        return;
+    }
 }

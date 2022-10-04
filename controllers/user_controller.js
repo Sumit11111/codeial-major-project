@@ -77,7 +77,8 @@ module.exports.create=async function(req,res){
     }
     else{res.redirect('back');}
     }catch(err){
-        console.log('Error',err)
+        console.log('Error',err);
+        return;
     }
 }
 
@@ -116,6 +117,7 @@ module.exports.create=async function(req,res){
 //Authentication using passport and express-session
 module.exports.createSession=function(req,res)
 {
+    req.flash('success','Logged In Successfully!');
     return res.redirect('/');
 }
 
@@ -124,6 +126,7 @@ module.exports.destroySession=function(req,res,next){
         if(err){
             return next(err);
         }
+        req.flash('success','Logged Out Successfully!');
         res.redirect('/');
     });
 }
