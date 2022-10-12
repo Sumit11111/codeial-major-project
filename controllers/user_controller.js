@@ -1,12 +1,35 @@
 const { modules } = require('../config/mongoose');
 const User=require('../models/user');
+const fs=require('fs');
+const path=require('path');
 
-module.exports.update=function(req,res){
+module.exports.update=async function(req,res){
     if(req.user.id==req.params.id){
-        User.findByIdAndUpdate(req.params.id,req.body,(err,user)=>{
-            return res.redirect('/');
-        })
-    }else{
+        try{
+            let user=await User.findById(req.params.id);
+            User.uploadedAvatar(req,res,(err)=>{
+                if(err){console.log('*****Multer Error',err);}
+                user.name=req.body.name;
+                user.email=req.body.email;
+                if(req.file){
+                    if(user.avatar)
+                    {
+                        fs.unlinkSync(path.join(__dirname,'..',user.avatar))       
+                    }
+                    //avatar field value updating in User schema
+                    user.avatar=User.avatarPath+'/'+req.file.filename;
+                }
+
+                user.save();
+                return res.redirect('/');
+            })
+        }
+        catch(err){
+            req.flash('error',err);
+            return res.redirect('back');
+        }
+    }
+    else{
         return res.status(401).send('Unauthorized');
     }
 }

@@ -56,5 +56,4 @@ passport.setAuthenticatedUser=(req,res,next)=>{
     
 }
 
-
 module.exports=passport;

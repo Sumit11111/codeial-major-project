@@ -15,6 +15,16 @@ module.exports.create=async function(req,res){
                 post:req.body.post,
                 user:req.user._id
             });
+
+            if(req.xhr){
+                console.log("xhr hit in comments");
+                return res.status(200).json({
+                    data:{
+                        comment:comment
+                    },
+                    message:"c0mment Created!"
+                })
+            }
                 //adding comment to post which we got by post id(passed in hidden input)
                 post.comments.push(comment);
                 post.save();
@@ -37,6 +47,15 @@ module.exports.destroy=async function(req,res){
             comment.remove();
 
             await Post.findByIdAndUpdate(postId,{$pull:{comments:req.params.id}})
+            if(req.xhr)
+            {
+                return res.status('200').json({
+                    data:{
+                        comment_id:req.params.id,
+                    },
+                    message:'comment deleted'            
+                })
+            }
             return res.redirect('/');
         }
         else{

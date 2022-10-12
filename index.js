@@ -11,7 +11,6 @@ const passportLocal=require('./config/passport_local_strategy');
 const MongoStore=require('connect-mongo');
 const sassMiddleware=require('node-sass-middleware');
 const flash=require('connect-flash');
-const { setFlash } = require('./config/middleware');
 const customMware=require('./config/middleware');
 
 //sassMiddleware setup
@@ -35,6 +34,8 @@ app.use(cookieParser());
 
 //setup for static files
 app.use(express.static('./assets'));
+//make the uploads path available for brwser
+app.use('/uploads',express.static(__dirname+'/uploads'));
 
 
 //view setup
