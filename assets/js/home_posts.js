@@ -31,9 +31,9 @@
     }
     //Method to create post dom
     let newPostDom=function(post){
-        return $(` <li id="post-${post._id}"> 
+        return $(` <li id="post-${post.id}"> 
         <p>
-            <small><a class="delete-post-button" href="/userPost/destroy/${post._id}">X</a></small>
+            <small><a class="delete-post-button" href="/userPost/destroy/${post.id}">X</a></small>
             ${post.content}
             <br>
             <small>
@@ -43,11 +43,11 @@
         <div class="post-comments">
             <form action="/comments/create" method="post">
                 <input type="text" name="content" placeholder="Enter your comment here...." required>
-                <input type="hidden" name="post" value=" ${post._id}">
+                <input type="hidden" name="post" value=" ${post.id}">
                 <input type="submit" value="Add Comment">
             </form>
             <div class="post-comments-list">
-                <ul id="post-comments-${post._id}">
+                <ul id="post-comments-${post.id}">
                 </ul>
             </div>
         </div>
@@ -87,3 +87,4 @@
 
     createPost();
 }
+<script type="text/javascript" src="/js/home_comments.js"></script>

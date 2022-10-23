@@ -1,7 +1,7 @@
 const { localsName } = require('ejs');
 const Comment = require('../models/comment');
 const Post=require('../models/post');
-const { post } = require('../routes');
+const comments_mailer=require('../mailers/comments_mailer');
 
 module.exports.create=async function(req,res){
     //console.log(req.body);
@@ -9,15 +9,32 @@ module.exports.create=async function(req,res){
     let post=await Post.findById(req.body.post);
         if(post)
         {
-            console.log("got post",post.comments);
+            //console.log("got post",post.comments);
             let comment=await Comment.create({
                 content:req.body.content,
                 post:req.body.post,
                 user:req.user._id
             });
+            post.comments.push(comment);
+            post.save();
+
+            comment=await comment.populate('user','name email');
+            comments_mailer.newComment(comment);
+
+
+            //Adding Delayed Jobs
+
+            
+            // let job=queue.create('create',comment).save((err)=>{
+            //     if(err){
+            //         console.log("Error in sending to the queue",err);
+            //         return;
+            //     }
+            //     console.log('job enqueued',job.id);
+            // })
 
             if(req.xhr){
-                console.log("xhr hit in comments");
+                console.log("xhr hit in comments"); 
                 return res.status(200).json({
                     data:{
                         comment:comment
@@ -26,8 +43,8 @@ module.exports.create=async function(req,res){
                 })
             }
                 //adding comment to post which we got by post id(passed in hidden input)
-                post.comments.push(comment);
-                post.save();
+                // post.comments.push(comment);
+                // post.save();
 
                 return res.redirect('/');
         }

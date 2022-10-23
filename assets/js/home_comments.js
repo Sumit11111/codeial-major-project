@@ -1,5 +1,5 @@
 {
-    // console.log("inside comments");
+    console.log("inside comments");
     let createComment=function(){
         console.log("create comment called");
         let newCommentForm=$('#post-comments-form');
