@@ -25,6 +25,15 @@
                     let newComment=newCommentDom(data.data.comment);
                     $('#post-comments-list>ul').prepend(newComment);
                     deleteComment($(' .delete-comment-button',newComment));
+
+                    new ToggleLike($('.toggle-like-button',newComment));
+                    new Noty({
+                        theme : 'relax' , 
+                        text: "Post deleted",
+                        type: 'success',
+                        layout : "topRight",
+                        timeout : 1500
+                        }).show();
                 },
                 error:function(err){
                     console.log(err);
@@ -43,6 +52,10 @@
             <br>
             <small>
                 ${comment.user.name}
+            </small>
+            <br>
+            <small>
+                <a class="toggle-like-button" data-likes="0" href="/likes/toggle/?id=${comment._id}&type=Comment">0 Likes</a>
             </small>
         </p>
     </li>`)

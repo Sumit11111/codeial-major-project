@@ -1,12 +1,22 @@
-<li>
+<li id="comment-<%=j._id%>">
     <p>
         <%if(locals.user && j.user.id==locals.user.id){%>
             <small><a href="/comments/destroy/<%=j.id%>">X</a></small>
             <%}%>
+            <small><a href="/comments/destroy/<%=j.id%>">X</a></small>
         <%=j.content%>
         <br>
         <small>
             <%=j.user.name%>
+        </small>
+        <br>
+        <small>
+            <%if(locals.user){%>
+                <a method="post" class="toggle-like-button" data-likes="<%=j.likes.length%>" href="/likes/toggle/?id=<%=j._id%>&type=Comment">
+                    <%=j.likes.length%> Likes</a>
+                <%}else{%>
+                    <%=j.likes.length%> Likes
+                    <%}%>
         </small>
     </p>
 </li>

@@ -1,12 +1,20 @@
 <li id="post-<%=i._id%>"> 
     <p>
-        <%if(locals.user && i.user.id==locals.user.id){%>
-        <small><a class="delete-post-button" href="/userPost/destroy/<%=i.id%>">X</a></small>
+        <%if(locals.user && i.user.id==locals.user._id){%>
+        <small><a class="delete-post-button" href="/userPost/destroy/<%=i._id%>">X</a></small>
         <%}%>
         <%=i.content%>
         <br>
         <small>
             <%=i.user.name%>
+        </small>
+        <br>
+        <small>
+            <%if(locals.user){%>
+                <a method="post" class="toggle-like-button" data-likes="<%=i.likes.length%>" href="/likes/toggle/?id=<%=i._id%>&type=Post"><%=i.likes.length%> Likes</a>
+                <%}else{%>
+                   <%=i.likes.length%> Likes
+                    <%}%>
         </small>
     </p>
     <div class="post-comments">
