@@ -8,21 +8,24 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-        <link rel="stylesheet" href="/css/layout.css">
-        <link rel="stylesheet" href="/css/header.css">
-        <link rel="stylesheet" href="/css/footer.css">
-        <link rel="stylesheet" href="/css/home.css">
-        <link rel="stylesheet" href="/css/profile.css">
-        <%- style %>
+        <link rel="stylesheet" href="<%= assetPath('css/layout.css') %>">
+        <link rel="stylesheet" href="<%= assetPath('css/header.css')%>">
+        <link rel="stylesheet" href="<%= assetPath('css/footer.css')%>">
+        <link rel="stylesheet" href="<%= assetPath('css/home.css')%>">
+        <link rel="stylesheet" href="<%= assetPath('css/profile.css')%>">
+        <link rel="stylesheet" href="<%= assetPath('css/chatBox.css')%>"> 
+        
+        <!-- <%- style %> -->
     </head>
     <body>
-        <%- include('_header');%>
+        <%- include('_header.ejs');%>
 
         <main id="layout-main">
             <%- body%>
+            <%-include('_chatEngine');-%>
         </main>
-        
-        <%- include('_footer');%>
+
+        <%- include('_footer.ejs');%>
         <%- script %>
         <script>
             <%if(flash.success && flash.success.length>0){%>

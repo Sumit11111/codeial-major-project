@@ -1,7 +1,8 @@
 const mongoose=require('mongoose');
+const env=require('./environment');
 
 //db uri passing
-mongoose.connect('mongodb://localhost/codeial_db_development');
+mongoose.connect(`mongodb://localhost/${env.db}`);
 
 //checking connection
 const db=mongoose.connection;
